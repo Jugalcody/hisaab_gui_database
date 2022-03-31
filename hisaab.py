@@ -1,4 +1,5 @@
-import tkinter as tk
+
+import tkinter as tk,datetime as d,mysql.connector as con
 class a(tk.Frame):
        def __init__(self,p,c):
             tk.Frame.__init__(self,p)
@@ -16,8 +17,8 @@ class a(tk.Frame):
             total=tk.Label(self,text="total",font=("Helvatica",15),bd=2,padx=10)
             total.place(x=430,y=240)
             total_e=tk.Entry(self)
-            total_e.place(x=590,y=240)
-            import mysql.connector as con
+            total_e.place(x=560,y=240)
+
             mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
             mycon=mydb.cursor()
 
@@ -25,7 +26,6 @@ class a(tk.Frame):
             def done():
                   y=f"use {l[0]}"
                   mycon.execute(y)
-                  import datetime as d
                   m=d.datetime.now().strftime("%B")
                   ta=f"create table if not exists {m} (item varchar(100),price varchar(100),date varchar(100),total varchar(100))"
                   mycon.execute(ta)
@@ -51,9 +51,6 @@ class b(tk.Frame):
                   user=e2.get()
                   l.append(user)
                   p1=e3.get()
-                  
-
-                  import mysql.connector as con
                   mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
                   mycon=mydb.cursor()
                   mycon.execute("use password_data")
@@ -74,7 +71,7 @@ class b(tk.Frame):
                       if store[user]==p1:
                              rr=m.askquestion("user exist!!","Do you want to continue?")
                              if rr=="yes":
-                               import mysql.connector as con
+                  
                                mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
                                mycon=mydb.cursor()
                                h=f"create database if not exists {e2.get()}"
@@ -117,7 +114,7 @@ class cc(tk.Frame):
             e33=tk.Entry(self)
             e33.place(x=560,y=180)
             def create():
-                         import mysql.connector as con
+                     
                          mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
                          mycon=mydb.cursor()
                          mycon.execute("create database if not exists password_data")
@@ -164,10 +161,13 @@ class d(tk.Tk):
 
 import os
 try:
- os.system("service mysql start")
+
  c=d()
  c.maxsize(1370,800)
  c.mainloop()
 except:
-    print("mysql server not found!!")
+      try:
+             os.system("service mysql start")
+      except:       
+            print("mysql server not found!!")
 
