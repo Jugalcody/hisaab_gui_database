@@ -25,8 +25,12 @@ class a(tk.Frame):
             mycon=mydb.cursor()
             import datetime as d
             m=d.datetime.now().strftime("%B")
-            x=f"use jugal"      #has to be update
-            mycon.execute(x)
+            try:
+              x=f"use l[0]"
+              mycon.execute(x)
+            except:
+                    x="use jugal"        #has to be update
+                    mycon.execute(x)
             import datetime as d
             m=d.datetime.now().strftime("%B")
             tat=f"create table if not exists {m} (item varchar(100),price varchar(100),date varchar(100),total varchar(100))"
@@ -45,7 +49,13 @@ class a(tk.Frame):
             smoney2=tk.Label(self,text=tota,font=("Helvatica",15),bd=2,padx=10)
             smoney1.place(x=750,y=60)
             smoney2.place(x=920,y=60)
- 
+
+            mydb.commit()
+            def bac():
+                     c.nn(cc)
+
+            back=tk.Button(self,text="back",cursor="hand2",font=("Helvatica",12),bd=2,command=bac)
+            back.place(x=750,y=300)
             mydb.commit()
             def done():
                   y=f"use {l[0]}"
@@ -96,8 +106,7 @@ class b(tk.Frame):
                   for i in range(len(store)):
                     if user in store:
                       if store[user]==p1:
-                             rr=m.askquestion("user exist!!","Do you want to continue?")
-                             if rr=="yes":
+                             
                   
                                mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
                                mycon=mydb.cursor()
@@ -147,14 +156,20 @@ class cc(tk.Frame):
                          mycon.execute("create database if not exists password_data")
                          mycon.execute("use password_data")
                          mycon.execute("create table if not exists data (username varchar(100) primary key,password varchar(100))")
-                         h="insert into data values(%s,%s)"
-                         hh=e22.get(),e33.get()
-                         mycon.execute(h,hh)
+                         if e22.get()!="" and e33.get()!="":
+                           h="insert into data values(%s,%s)"
+                           hh=e22.get(),e33.get()
+                           mycon.execute(h,hh)
+                     
                          mydb.commit()
                          c.nn(b) 
                          
             new=tk.Button(self,text="create account",cursor="hand2",font=("Helvatica",12),bd=2,command=create)
             new.place(x=620,y=240)
+            def leave():
+                   c.nn(b)
+            exit=tk.Button(self,text="leave",cursor="hand2",font=("Helvatica",12),bd=2,command=leave)
+            exit.place(x=500,y=240)
                
                
                                       
@@ -180,7 +195,7 @@ class d(tk.Tk):
             self.resizable(False,False)
             self.h={b:f1,a:f,cc:f2}      
             self.configure(bg="yellow")
-            f1.tkraise()
+            self.nn(b)
        def nn(self,v):
             m=self.h[v]
             m.grid(row=0,column=0,sticky="nsew")
