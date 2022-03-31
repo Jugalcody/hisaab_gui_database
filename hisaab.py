@@ -29,6 +29,7 @@ class a(tk.Frame):
               x=f"use l[0]"
               mycon.execute(x)
             except:
+                    mycon.execute("create database if not exists jugal") 
                     x="use jugal"        #has to be update
                     mycon.execute(x)
             import datetime as d
@@ -90,7 +91,9 @@ class b(tk.Frame):
                   p1=e3.get()
                   mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
                   mycon=mydb.cursor()
+                  mycon.execute("create database if not exists password_data")
                   mycon.execute("use password_data")
+                  mycon.execute("create table if not exists data (username varchar(100) primary key,password varchar(100))")
                   mycon.execute("select * from data")
                   data=mycon.fetchall()
                   
@@ -102,7 +105,9 @@ class b(tk.Frame):
                      zz=list(i)
                      store[zz[0]]=zz[1]
                   from tkinter import messagebox as m 
-                  found=0    
+                  found=0
+                  if len(store)==0:
+                          m.showerror("alert","user not found!!")    
                   for i in range(len(store)):
                     if user in store:
                       if store[user]==p1:
