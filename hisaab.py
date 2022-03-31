@@ -1,5 +1,6 @@
 
-import tkinter as tk,datetime as d,mysql.connector as con
+import tkinter as tk,mysql.connector as con
+
 class a(tk.Frame):
        def __init__(self,p,c):
             tk.Frame.__init__(self,p)
@@ -18,14 +19,38 @@ class a(tk.Frame):
             total.place(x=430,y=240)
             total_e=tk.Entry(self)
             total_e.place(x=560,y=240)
-
+            
+            
             mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
             mycon=mydb.cursor()
-
-           
+            import datetime as d
+            m=d.datetime.now().strftime("%B")
+            x=f"use jugal"      #has to be update
+            mycon.execute(x)
+            import datetime as d
+            m=d.datetime.now().strftime("%B")
+            tat=f"create table if not exists {m} (item varchar(100),price varchar(100),date varchar(100),total varchar(100))"
+            mycon.execute(tat)
+            
+            month=f"select * from {m}"
+            mycon.execute(month)
+            data=mycon.fetchall()                               
+            jj=list(data)
+            try:
+              zz=list(jj[-1])
+              tota=str(zz[-1])         
+            except:
+                tota=0  
+            smoney1=tk.Label(self,text="Total money",font=("Helvatica",15),bd=2,padx=10)
+            smoney2=tk.Label(self,text=tota,font=("Helvatica",15),bd=2,padx=10)
+            smoney1.place(x=750,y=60)
+            smoney2.place(x=920,y=60)
+ 
+            mydb.commit()
             def done():
                   y=f"use {l[0]}"
                   mycon.execute(y)
+                  import datetime as d
                   m=d.datetime.now().strftime("%B")
                   ta=f"create table if not exists {m} (item varchar(100),price varchar(100),date varchar(100),total varchar(100))"
                   mycon.execute(ta)
@@ -37,6 +62,8 @@ class a(tk.Frame):
                   mydb.commit()
             b=tk.Button(self,text="commit",font=("Helvatica",15),bd=2,command=done)
             b.place(x=450,y=300)
+
+
 global l        
 l=[]
 class b(tk.Frame):
@@ -139,16 +166,16 @@ class d(tk.Tk):
             w.pack(expand=True)
             w.grid_rowconfigure(0,minsize=580)
             w.grid_columnconfigure(0,minsize=1200)
+       
+            f1=b(w,self)
+            f1.grid(row=0,column=0,sticky="nsew")
             
             f=a(w,self)
             f.grid(row=0,column=0,sticky="nsew")
             
-            f1=b(w,self)
-            f1.grid(row=0,column=0,sticky="nsew")
-            
             f2=cc(w,self)
             f2.grid(row=0,column=0,sticky="nsew")
-            
+          
             self.geometry("1370x800")
             self.resizable(False,False)
             self.h={b:f1,a:f,cc:f2}      
@@ -159,15 +186,9 @@ class d(tk.Tk):
             m.grid(row=0,column=0,sticky="nsew")
             m.tkraise()
 
-import os
-try:
 
- c=d()
- c.maxsize(1370,800)
- c.mainloop()
-except:
-      try:
-             os.system("service mysql start")
-      except:       
-            print("mysql server not found!!")
+
+c=d()
+c.maxsize(1370,800)
+c.mainloop()
 
