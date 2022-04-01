@@ -78,7 +78,7 @@ class a(tk.Frame):
                   if price=="":
                                   price=0                
                   rem=str(int(tota)-int(price))
-                  print(rem,tttt)
+                
                   if(int(rem)<0):
                         from tkinter import messagebox as m
                         m.showerror("error","insufficient balance!!")
