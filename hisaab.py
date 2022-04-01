@@ -8,15 +8,15 @@ class a(tk.Frame):
             n=tk.Label(self,text="Database",font=("Arial",25,"bold"),bd=2,bg="cyan")
             n.place(x=530,y=0)
             item=tk.Label(self,text="item",font=("Helvatica",15),bd=2,padx=10)
-            item.place(x=430,y=120)
+            item.place(x=400,y=120)
             item_e=tk.Entry(self)
             item_e.place(x=560,y=120)
             price=tk.Label(self,text="price",font=("Helvatica",15),bd=2,padx=10)
-            price.place(x=430,y=180)
+            price.place(x=400,y=180)
             price_e=tk.Entry(self)
             price_e.place(x=560,y=180)
-            total=tk.Label(self,text="total",font=("Helvatica",15),bd=2,padx=10)
-            total.place(x=430,y=240)
+            total=tk.Label(self,text="add money",font=("Helvatica",15),bd=2,padx=10)
+            total.place(x=400,y=240)
             total_e=tk.Entry(self)
             total_e.place(x=560,y=240)
             
@@ -41,10 +41,13 @@ class a(tk.Frame):
             mycon.execute(month)
             data=mycon.fetchall()                               
             jj=list(data)
+            global tota
             try:
+              
               zz=list(jj[-1])
               tota=str(zz[-1])         
             except:
+                
                 tota=0  
             smoney1=tk.Label(self,text="Total money",font=("Helvatica",15),bd=2,padx=10)
             smoney2=tk.Label(self,text=tota,font=("Helvatica",15),bd=2,padx=10)
@@ -68,9 +71,23 @@ class a(tk.Frame):
                   o=f"insert into {m} values (%s,%s,%s,%s)"
                   i=d.datetime.now()
                   date=i.strftime("%d")+"-"+i.strftime("%m")+"-"+i.strftime("%y")
-                  vv=item_e.get(),price_e.get(),date,str(int(total_e.get())-int(price_e.get()))
-                  mycon.execute(o,vv)
-                  mydb.commit()
+                  tttt=total_e.get()
+                  price=price_e.get()
+                  if tttt=="":
+                                  tttt=0
+                  if price=="":
+                                  price=0                
+                  rem=str(int(tota)-int(price))
+                  print(rem,tttt)
+                  if(int(rem)<0):
+                        from tkinter import messagebox as m
+                        m.showerror("error","insufficient balance!!")
+                  else:      
+                        
+                            
+                       vv=item_e.get(),price,date,str(int(rem)+int(tttt))
+                       mycon.execute(o,vv)
+                       mydb.commit()
             b=tk.Button(self,text="commit",font=("Helvatica",15),bd=2,command=done)
             b.place(x=450,y=300)
 
