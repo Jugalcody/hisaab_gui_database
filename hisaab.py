@@ -1,8 +1,9 @@
 
 import tkinter as tk,mysql.connector as con
 
+
 class a(tk.Frame):
-       def __init__(self,p,c):
+       def info1(self,p,c):
             tk.Frame.__init__(self,p)
             self.configure(bg="green")
             n=tk.Label(self,text="Database",font=("Arial",25,"bold"),bd=2,bg="cyan")
@@ -20,8 +21,8 @@ class a(tk.Frame):
             total_e=tk.Entry(self)
             total_e.place(x=560,y=240)
             
-            
-            mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
+      
+            mydb=con.connect(host="localhost",user=l[0],password=l[1])
             mycon=mydb.cursor()
             import datetime as d
             m=d.datetime.now().strftime("%B")
@@ -29,8 +30,12 @@ class a(tk.Frame):
               x=f"use l[0]"
               mycon.execute(x)
             except:
-                    mycon.execute("create database if not exists jugal") 
-                    x="use jugal"        #has to be update
+                   
+                    
+                    ec=f"create database if not exists {l[0]}"
+                    mycon.execute(ec) 
+                    x=f"use {l[0]}"        #has to be update
+                   
                     mycon.execute(x)
             import datetime as d
             m=d.datetime.now().strftime("%B")
@@ -57,6 +62,7 @@ class a(tk.Frame):
             mydb.commit()
             def bac():
                      c.nn(cc)
+                     
 
             back=tk.Button(self,text="back",cursor="hand2",font=("Helvatica",12),bd=2,command=bac)
             back.place(x=750,y=300)
@@ -69,8 +75,8 @@ class a(tk.Frame):
                   ta=f"create table if not exists {m} (item varchar(100),price varchar(100),date varchar(100),total varchar(100))"
                   mycon.execute(ta)
                   o=f"insert into {m} values (%s,%s,%s,%s)"
-                  i=d.datetime.now()
-                  date=i.strftime("%d")+"-"+i.strftime("%m")+"-"+i.strftime("%y")
+                  ii=d.datetime.now()
+                  date=ii.strftime("%d")+"-"+ii.strftime("%m")+"-"+ii.strftime("%y")
                   tttt=total_e.get()
                   price=price_e.get()
                   if tttt=="":
@@ -92,21 +98,60 @@ class a(tk.Frame):
             b.place(x=450,y=300)
 
 
-global l        
-l=[]
+class mysqll(tk.Frame):
+   
+       def info(self,p,c):
+            global l
+            l=[]
+            
+            tk.Frame.__init__(self,p)     
+           # self.configure(bg="blue")          #  mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
+            l11=tk.Label(self,text="Mysql Authentication",font=("Arial",25,"bold"),bd=2,bg="cyan")
+            l11.place(x=413,y=0)
+            l22=tk.Label(self,text="username",font=("Helvatica",15))
+            l22.place(x=430,y=120)
+            e22=tk.Entry(self)
+            e22.place(x=560,y=120)
+            l33=tk.Label(self,text="password",font=("Helvatica",15))
+            l33.place(x=430,y=180)
+            e33=tk.Entry(self)
+            e33.place(x=560,y=180)
+            self.user=e22.get()
+            self.password=e33.get()
+            def newacc():
+                         self.user=e22.get()
+                         self.password=e33.get()
+                         
+                         
+                         try:
+                           mydb=con.connect(host="localhost",user=self.user,password=self.password)
+                           l.append(self.user)
+                           l.append(self.password)
+                           
+                           c.nn(cc)
+                         except:
+                              from tkinter import messagebox as m
+                              m.showerror("Authentication error","incorrect username and password")  
+            new=tk.Button(self,text="sign in",cursor="hand2",font=("Helvatica",12),bd=2,command=newacc)
+            new.place(x=440,y=240)
+            
+          
 class b(tk.Frame):
-
-       def __init__(self,p,c):
+       def compute(self,p,c):
+                                        
             tk.Frame.__init__(self,p)
            # self.configure(bg="cyan")
+           
             global pp
             
             def ok():
-                  global user
+                  global user,l2
+                  l2=[]
                   user=e2.get()
-                  l.append(user)
+              
                   p1=e3.get()
-                  mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
+                  cd=mysqll()
+                  mydb=con.connect(host="localhost",user=l[0],password=l[1])
                   mycon=mydb.cursor()
                   mycon.execute("create database if not exists password_data")
                   mycon.execute("use password_data")
@@ -118,23 +163,29 @@ class b(tk.Frame):
                   mycon.execute("select * from data")
  
                   jj=list(data)
-                  for i in jj:
-                     zz=list(i)
+                  for k in jj:
+                     zz=list(k)
                      store[zz[0]]=zz[1]
                   from tkinter import messagebox as m 
                   found=0
                   if len(store)==0:
                           m.showerror("alert","user not found!!")    
-                  for i in range(len(store)):
+                  for k in range(len(store)):
                     if user in store:
                       if store[user]==p1:
                              
                   
-                               mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
+                               mydb=con.connect(host="localhost",user=l[0],password=l[1])
                                mycon=mydb.cursor()
+                               l2.append(user)
                                h=f"create database if not exists {e2.get()}"
                                mycon.execute(h)
-                               c.nn(a)
+                               f=a()
+                               
+                               f.info1(p,c)
+                               #c.nn(a)
+                               f.grid(row=0,column=0,sticky="nsew")
+                               f.tkraise()
                       else:
                                found=1         
                     else:
@@ -160,6 +211,8 @@ class b(tk.Frame):
             
 class cc(tk.Frame):
         def __init__(self,p,c):
+           
+           
             tk.Frame.__init__(self,p)
             l11=tk.Label(self,text="Hisaab",font=("Arial",25,"bold"),bd=2,bg="cyan")
             l11.place(x=530,y=0)
@@ -171,9 +224,8 @@ class cc(tk.Frame):
             l33.place(x=430,y=180)
             e33=tk.Entry(self)
             e33.place(x=560,y=180)
-            def create():
-                     
-                         mydb=con.connect(host="localhost",user="jugal",password="Jugal2002@")
+            def create():                     
+                         mydb=con.connect(host="localhost",user=l[0],password=l[1])
                          mycon=mydb.cursor()
                          mycon.execute("create database if not exists password_data")
                          mycon.execute("use password_data")
@@ -182,18 +234,18 @@ class cc(tk.Frame):
                            h="insert into data values(%s,%s)"
                            hh=e22.get(),e33.get()
                            mycon.execute(h,hh)
-                     
+                          
                          mydb.commit()
                          c.nn(b) 
                          
-            new=tk.Button(self,text="create account",cursor="hand2",font=("Helvatica",12),bd=2,command=create)
-            new.place(x=620,y=240)
+            new=tk.Button(self,text="sign up",cursor="hand2",font=("Helvatica",12),bd=2,command=create)
+            new.place(x=700,y=240)
             def leave():
                    c.nn(b)
-            exit=tk.Button(self,text="leave",cursor="hand2",font=("Helvatica",12),bd=2,command=leave)
-            exit.place(x=500,y=240)
-               
-               
+            exit=tk.Button(self,text="Already have an account",cursor="hand2",font=("Helvatica",12),bd=2,command=leave)
+            exit.place(x=450,y=240)
+    
+                     
                                       
             
 class d(tk.Tk):
@@ -203,37 +255,34 @@ class d(tk.Tk):
             w.pack(expand=True)
             w.grid_rowconfigure(0,minsize=580)
             w.grid_columnconfigure(0,minsize=1200)
-       
-            f1=b(w,self)
+         
+            f1=b()
+            f1.compute(w,self)
             f1.grid(row=0,column=0,sticky="nsew")
-            
-            f=a(w,self)
-            f.grid(row=0,column=0,sticky="nsew")
+             
+            d=mysqll()
+            d.info(w,self)
+            d.grid(row=0,column=0,sticky="nsew")
+            f=a()
+
+      #      f.grid(row=0,column=0,sticky="nsew")
             
             f2=cc(w,self)
             f2.grid(row=0,column=0,sticky="nsew")
           
             self.geometry("1370x800")
             self.resizable(False,False)
-            self.h={b:f1,a:f,cc:f2}      
+            self.h={b:f1,a:f,cc:f2,mysqll:d}      
             self.configure(bg="yellow")
-            self.nn(b)
+            self.nn(mysqll)
        def nn(self,v):
             m=self.h[v]
             m.grid(row=0,column=0,sticky="nsew")
             m.tkraise()
 
 
-try:
-  c=d()
-  c.maxsize(1370,800)
-  c.mainloop()
-except:
-     try:
-           import os
-           os.system("service mysql start")
-           c=d()
-           c.maxsize(1370,800)
-           c.mainloop()
-     except:
-            print("sorry,unable to access mysql server!!")
+#try:
+c=d()
+c.maxsize(1370,800)
+c.mainloop()
+
