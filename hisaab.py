@@ -281,8 +281,16 @@ class d(tk.Tk):
             m.tkraise()
 
 
-#try:
-c=d()
-c.maxsize(1370,800)
-c.mainloop()
-
+try:
+   c=d()
+   c.maxsize(1370,800)
+   c.mainloop()
+except:
+     try:
+          import os
+          os.system("sevice mysql start")
+          c=d()
+          c.maxsize(1370,800)
+          c.mainloop()
+     except:
+          print("sorry, unable to access mysql server")     
