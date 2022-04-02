@@ -124,6 +124,8 @@ class mysqll(tk.Frame):
                          
                          
                          try:
+                           import os
+                           os.system("service mysql start")
                            mydb=con.connect(host="localhost",user=self.user,password=self.password)
                            l.append(self.user)
                            l.append(self.password)
@@ -131,6 +133,7 @@ class mysqll(tk.Frame):
                            c.nn(cc)
                          except:
                               from tkinter import messagebox as m
+
                               m.showerror("Authentication error","incorrect username and password")  
             new=tk.Button(self,text="sign in",cursor="hand2",font=("Helvatica",12),bd=2,command=newacc)
             new.place(x=440,y=240)
@@ -286,11 +289,4 @@ try:
    c.maxsize(1370,800)
    c.mainloop()
 except:
-     try:
-          import os
-          os.system("sevice mysql start")
-          c=d()
-          c.maxsize(1370,800)
-          c.mainloop()
-     except:
-          print("sorry, unable to access mysql server")     
+       print("sorry, unable to access mysql server")     
