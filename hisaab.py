@@ -94,6 +94,9 @@ class a(tk.Frame):
                        vv=item_e.get(),price,date,str(int(rem)+int(tttt))
                        mycon.execute(o,vv)
                        mydb.commit()
+                       
+                  smoney2.configure(text=str(int(rem)+int(tttt)))
+                  
             b=tk.Button(self,text="commit",font=("Helvatica",15),bd=2,command=done)
             b.place(x=450,y=300)
 
@@ -124,17 +127,24 @@ class mysqll(tk.Frame):
                          
                          
                          try:
-                           import os
-                           os.system("service mysql start")
+                           
                            mydb=con.connect(host="localhost",user=self.user,password=self.password)
                            l.append(self.user)
                            l.append(self.password)
                            
                            c.nn(cc)
                          except:
-                              from tkinter import messagebox as m
-
-                              m.showerror("Authentication error","incorrect username and password")  
+                              try:
+                                   import os
+                                   os.system("service mysql start")
+                                   mydb=con.connect(host="localhost",user=self.user,password=self.password)
+                                   l.append(self.user)
+                                   l.append(self.password)
+                                   c.nn(cc)
+                                   
+                              except:
+                                     from tkinter import messagebox as m
+                                     m.showerror("Authentication error","incorrect username and password")  
             new=tk.Button(self,text="sign in",cursor="hand2",font=("Helvatica",12),bd=2,command=newacc)
             new.place(x=440,y=240)
             
